@@ -5,26 +5,27 @@ Check the status
 
 from flask import jsonify
 from models import storage
-from api.v1.views import app_views 
+from api.v1.views import app_views
+
 
 @app_views.route('/status')
 def status_check():
     '''check the view status'''
     status = {
-            'status':'OK'
-            }
+        'status': 'OK'
+    }
     return jsonify(status)
 
+
 @app_views.route('/api/v1/stats')
-def obj_count(): 
+def obj_count():
     '''Retrieves the number of each objects by type'''
     obj = {
-            'amenities': storage.count('Amenity'),
-            'cities': storage.count('City'),
-            'places': storage.count('Place'),
-            'reviews': storage.count('Review'), 
-            'states': storage.count('State'),
-            'users': storage.count('User')
-            }
+        'amenities': storage.count('Amenity'),
+        'cities': storage.count('City'),
+        'places': storage.count('Place'),
+        'reviews': storage.count('Review'),
+        'states': storage.count('State'),
+        'users': storage.count('User')
+    }
     return jsonify(obj)
-
