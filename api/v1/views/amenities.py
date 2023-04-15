@@ -33,7 +33,7 @@ def del_amenity(amenity_id):
     if not amenity:
         abort(404)
     else:
-        amenity.delete(amenity)
+        amenity.delete()
         storage.save()
         return jsonify({}), 200
     
@@ -42,22 +42,22 @@ def del_amenity(amenity_id):
 def create_amenity(amenity_id):
     req = request.get_json()
     if req is None:
-        abort(400, description= 'Not a JSON')
+        abort(400, description='Not a JSON')
     if "name" not in req:
-        abort(400, description= 'Missing name')
+        abort(400, description='Missing name')
     new_amenity = Amenity(name=reques.json['name'])
     storage.new(new_amenity)
     storage.save()
-    return new_amenity.to_dict(), 201
+    return jsonify(new_amenity.to_dict()), 201
 
 
 @app_views.route('amenities/<amenity_id>', methods=['PUT'])
 def put_amenity(amenity_id):
     '''update amenity'''
     req = request.get_json()
-    amenity = storage.get('Amenity', amenity_id)
     if not request.json:
         abort(400, 'Not a JSON')
+    amenity = storage.get('Amenity', amenity_id)
     if amenity is None:
         abort(404)
     for key in req:
