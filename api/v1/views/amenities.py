@@ -40,15 +40,14 @@ def del_amenity(amenity_id):
 @app_views.route('/amenities', methods = ['POST'])
 def create_amenity():
     req = request.get_json()
-    if type(req) is not dict:
-        abort('404', description= 'Not a JSON')
-    if "name" in req:
-        new_amenity = classes["Amenity"](**req)
-        storage.new(new_amenity)
-        storage.save()
-        return jsonify(new_amenity.to_dict()), 200
-    else:
+    if type(req) != dict:
+        abort('400', description= 'Not a JSON')
+    if "name" not in req:
         abort(400, description= 'Missing name')
+    new_amenity = classes["Amenity"](**req)
+    storage.new(new_amenity)
+    storage.save()
+    return jsonify(new_amenity.to_dict()), 201
 
 
 @app_views.route('amenities/<amenity_id>', methods=['PUT'])
