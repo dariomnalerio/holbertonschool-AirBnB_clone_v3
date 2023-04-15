@@ -1,12 +1,11 @@
 
 #!/usr/bin/python3
-"""view for Amenity"""
+'''view for amenity'''
 
 from flask import Flask, jsonify, request, abort
-from models import storage, app_views
-from models.amenity import Amenity 
+from models import storage
 from console import classes
-
+from api.v1.views import app_views
 
 @app_views.route('/amenities')
 def get_amenities():
