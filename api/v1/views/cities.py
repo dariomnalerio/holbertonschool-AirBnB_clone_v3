@@ -56,7 +56,7 @@ def create_city(state_id):
             storage.new(city_instance)
             storage.save()
             return city_instance.to_dict(), 201
-        except:
+        except Exception:
             abort(400, description="Not a JSON")
 
 
@@ -65,12 +65,12 @@ def update_city(city_id):
     """ Updates a City object """
     city_instance = storage.get(classes['City'], city_id)
     if city_instance:
-        if not request.get_json(): # if request.get_json() is None
+        if not request.get_json():  # if request.get_json() is None
             abort(400, description="Not a JSON")
         for key, value in request.get_json().items():
-            if key not in ['id', 'created_at', 'updated_at']: # ignore these keys
+            if key not in ['id', 'created_at', 'updated_at']:  # ignore keys
                 setattr(city_instance, key, value)
         storage.save()
-        return jsonify(city_instance.to_dict()), 200 # return updated city
+        return jsonify(city_instance.to_dict()), 200  # return updated city
     else:
         abort(404)
