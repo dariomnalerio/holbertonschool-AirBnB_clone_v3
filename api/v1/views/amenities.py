@@ -1,5 +1,5 @@
 
-#!/urs/bin/python3
+#!/usr/bin/python3
 """view for Amenity"""
 
 from flask import Flask, jsonify, request, abort
