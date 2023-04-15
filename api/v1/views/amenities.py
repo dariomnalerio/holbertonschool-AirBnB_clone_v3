@@ -64,6 +64,6 @@ def put_amenity(amenity_id):
         abort(400, description= 'Not a JSON')
     for key, value in amenity.items():
         if key in ['id', 'created_at', 'updated_at']:
-        setattr(amenity, key, value)
+            setattr(amenity, key, value)
     storage.save()
     return jsonify(amenity.to_dict()), 200
