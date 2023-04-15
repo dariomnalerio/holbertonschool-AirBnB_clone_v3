@@ -43,7 +43,7 @@ def delete_city(city_id):
 def create_city(state_id):
     """Create a new city."""
     if not storage.get(classes["State"], state_id):
-        abort(404)
+        abort(400)
     else:
         try:
             req = request.get_json()
