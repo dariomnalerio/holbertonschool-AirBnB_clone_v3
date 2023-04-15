@@ -8,7 +8,7 @@ from console import classes
 from api.v1.views import app_views
 
 @app_views.route('/amenities')
-def get_amenities():
+def get_amenities(amenity_id):
     '''Retrieves a list with all Amenity objects'''
     amenity = storage.all('Amenity')
     amenities_list = []
@@ -38,16 +38,17 @@ def del_amenity(amenity_id):
     
      
 @app_views.route('/amenities', methods = ['POST'])
-def create_amenity():
+def create_amenity(amenity_id):
     req = request.get_json()
-    if type(req) != dict:
+    if not req:
         abort('400', description= 'Not a JSON')
     if "name" not in req:
         abort(400, description= 'Missing name')
     new_amenity = classes["Amenity"](**req)
+    new_amenity.amenity_id = amenity_id
     storage.new(new_amenity)
     storage.save()
-    return jsonify(new_amenity.to_dict()), 201
+    return new_amenity.to_dict(), 201
 
 
 @app_views.route('amenities/<amenity_id>', methods=['PUT'])
@@ -63,8 +64,6 @@ def put_amenity(amenity_id):
         abort(400, description= 'Not a JSON')
     for key, value in amenity.items():
         if key in ['id', 'created_at', 'updated_at']:
-            continue
         setattr(amenity, key, value)
     storage.save()
-    
     return jsonify(amenity.to_dict()), 200
