@@ -4,7 +4,7 @@
 
 from flask import Flask, jsonify, request, abort
 from models import storage
-from console import classes
+from models.amenity import Amenity
 from api.v1.views import app_views
 
 @app_views.route('/amenities')
