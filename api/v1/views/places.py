@@ -48,21 +48,21 @@ def create_place(city_id):
     cities = storage.all(classes["City"])
     if f"City.{city_id}" not in cities:
         abort(404)
-    try:
-        req = request.get_json()
-        if not req:
-            abort(400, description="Not a JSON")
-        if "user_id" not in req:
-            abort(400, description="Missing user_id")
-        if "name" not in req:
-            abort(400, description="Missing name")
-        req["city_id"] = city_id
-        place_instance = classes["Place"](**req)
-        storage.new(place_instance)
-        storage.save()
-        return place_instance.to_dict(), 201
-    except Exception:
+    req = request.get_json()
+    if not req:
         abort(400, description="Not a JSON")
+    if "user_id" not in req:
+        abort(400, description="Missing user_id")
+    if "name" not in req:
+        abort(400, description="Missing name")
+    
+    req["city_id"] = city_id
+    place_instance = classes["Place"](**req)
+    storage.new(place_instance)
+    storage.save()
+    return place_instance.to_dict(), 201
+
+
 
 
 @app_views.route('/places/<place_id>', methods=['PUT'])
@@ -82,3 +82,5 @@ def update_place(place_id):
             return place.to_dict(), 200
         except Exception:
             abort(400, description="Not a JSON")
+    else:
+        abort(404)
