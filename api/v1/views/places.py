@@ -49,14 +49,16 @@ def create_place(city_id):
     if f"City.{city_id}" not in cities:
         abort(404)
     req = request.get_json()
-    if f"User.{req['user_id']}" not in storage.all(classes["User"]):
-        abort(404) # user_id must be linked to User
     if not req:
         abort(400, description="Not a JSON")
     if "user_id" not in req:
         abort(400, description="Missing user_id")
     if "name" not in req:
         abort(400, description="Missing name")
+    users = storage.all(classes["User"])
+    user_id = req["user_id"]
+    if f"User.{user_id}" not in user_list:
+        abort(404)  # user_id is not linked to any User object
 
     req["city_id"] = city_id
     place_instance = classes["Place"](**req)
