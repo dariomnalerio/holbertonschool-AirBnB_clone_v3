@@ -12,7 +12,7 @@ def get_amenities():
     amenities = storage.all('Amenity')
     amenities_list = []
     for amenity in amenities.values:
-        amenity_list-append(amenity)
+        amenity_list.append(amenity)
     return jsonify(amenities_list)
 
 
