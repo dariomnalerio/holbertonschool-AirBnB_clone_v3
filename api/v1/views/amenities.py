@@ -7,16 +7,18 @@ from models.amenity import Amenity
 from api.v1.views import app_views
 
 @app_views.route('/amenities')
-def get_amenities(amenity_id):
+def get_amenities():
     '''Retrieves a list with all Amenity objects'''
-    amenity = storage.get('Amenity', amenity_id)
-    amenities_list = [obj.to_dict() for obj in storage.all("Amenity").values()]
+    amenities = storage.all('Amenity')
+    amenities_list = []
+    for amenity in amenities.values:
+        amenity_list-append(amenity)
     return jsonify(amenities_list)
 
 
-@app_views.route('/amenities/<amenity_id>', methods = ['GET'])
+@app_views.route('/amenities/<amenity_id>', methods=['GET'])
 def get_amenity(amenity_id):
-    '''Get amenity amenity object by id'''
+    '''Get amenity amenity object'''
     amenity = storage.get('Amenity', amenity_id)
     if amenity is None:
         abort(404)
@@ -37,6 +39,7 @@ def del_amenity(amenity_id):
      
 @app_views.route('/amenities', methods = ['POST'])
 def create_amenity(amenity_id):
+    '''New amenity'''
     req = request.get_json()
     if req is None:
         abort(400, description='Not a JSON')
@@ -53,7 +56,7 @@ def put_amenity(amenity_id):
     '''update amenity'''
     req = request.get_json()
     if not request.json:
-        abort(400, 'Not a JSON')
+        abort(400, description='Not a JSON')
     amenity = storage.get('Amenity', amenity_id)
     if amenity is None:
         abort(404)
