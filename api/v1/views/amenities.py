@@ -8,10 +8,11 @@ from console import classes
 
 
 @app_views.route('/amenities')
-def get_amenities():
-    """ Retrieves the list of all Amenity objects """
-    amenities = storage.all(Amenity).values()
-    return jsonify([amenity.to_dict() for amenity in amenities])
+def get_all_amenities():
+    """Return the list of all amenities."""
+    amenities = [amenity.to_dict()
+                 for amenity in storage.all(classes["Amenity"]).values()]
+    return jsonify(amenities)
 
 
 @app_views.route('/amenities/<amenity_id>')
@@ -49,7 +50,7 @@ def create_amenity():
         storage.new(amenity_instance)
         storage.save()
         return amenity_instance.to_dict(), 201
-    except:
+    except Exception:
         abort(400, description="Not a JSON")
 
 
@@ -67,7 +68,7 @@ def update_amenity(amenity_id):
                     setattr(amenity, key, value)
             storage.save()
             return jsonify(amenity.to_dict()), 200
-        except:
+        except Exception:
             abort(400, description="Not a JSON")
     else:
         abort(404)
